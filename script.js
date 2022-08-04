@@ -1,10 +1,16 @@
 const inputAdd = document.getElementById("input-add-todo");
 const todoCtn = document.getElementById("todo-container");
+const localStorageName = "setyorsoodtorsoodporcmorsonghorsaikai";
 
 inputAdd.onkeyup = (event) => {
   if (event.key !== "Enter") return;
-
-  //your code here
+  const val = inputAdd.value;
+  if (val == "") {
+    alert("Todo cannot be empty");
+    return;
+  }
+  addTodo(val, false);
+  saveTodo();
 };
 
 function addTodo(title, completed) {
@@ -29,20 +35,38 @@ function addTodo(title, completed) {
   deleteBtn.className = "btn btn-danger";
 
   //your code here
-  //append todo to HTML...
-  //define buttons event...
+  div.appendChild(span);
+  div.appendChild(doneBtn);
+  div.appendChild(deleteBtn);
+  todoCtn.appendChild(div);
+  doneBtn.onclick = () => {
+    completed = !completed;
+    span.style.textDecoration = completed ? "line-through" : "";
+    saveTodo();
+  };
+  deleteBtn.onclick = () => {
+    todoCtn.removeChild(div);
+    saveTodo();
+  };
 }
 
 function saveTodo() {
   const data = [];
   for (const todoDiv of todoCtn.children) {
-    //your code here
+    data.push({
+      title: todoDiv.children[0].innerText,
+      completed: todoDiv.children[0].style.textDecoration === "line-through",
+    });
   }
-  //your code here
+  localStorage.setItem(localStorageName, JSON.stringify(data));
 }
 
 function loadTodo() {
-  //your code here
+  const data = JSON.parse(localStorage.getItem(localStorageName));
+  console.log(data);
+  for (const todo of data) {
+    addTodo(todo.title, todo.completed);
+  }
 }
 
 loadTodo();
