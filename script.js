@@ -10,6 +10,7 @@ inputAdd.onkeyup = (event) => {
     return;
   }
   addTodo(val, false);
+  inputAdd.value = "";
   saveTodo();
 };
 
@@ -38,6 +39,17 @@ function addTodo(title, completed) {
   div.appendChild(span);
   div.appendChild(doneBtn);
   div.appendChild(deleteBtn);
+
+  doneBtn.style.display = "none";
+  deleteBtn.style.display = "none";
+  div.onmouseover = () => {
+    doneBtn.style.display = "";
+    deleteBtn.style.display = "";
+  };
+  div.onmouseout = () => {
+    doneBtn.style.display = "none";
+    deleteBtn.style.display = "none";
+  };
   doneBtn.onclick = () => {
     completed = !completed;
     span.style.textDecoration = completed ? "line-through" : "";
@@ -62,7 +74,9 @@ function saveTodo() {
 }
 
 function loadTodo() {
-  const data = JSON.parse(localStorage.getItem(localStorageName));
+  const raw = localStorage.getItem(localStorageName);
+  if (raw == null) return;
+  const data = JSON.parse(raw);
   for (const todo of data) {
     addTodo(todo.title, todo.completed);
   }
