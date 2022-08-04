@@ -38,7 +38,6 @@ function addTodo(title, completed) {
   div.appendChild(span);
   div.appendChild(doneBtn);
   div.appendChild(deleteBtn);
-  todoCtn.appendChild(div);
   doneBtn.onclick = () => {
     completed = !completed;
     span.style.textDecoration = completed ? "line-through" : "";
@@ -48,6 +47,7 @@ function addTodo(title, completed) {
     todoCtn.removeChild(div);
     saveTodo();
   };
+  todoCtn.insertBefore(div, todoCtn.firstChild);
 }
 
 function saveTodo() {
@@ -63,7 +63,6 @@ function saveTodo() {
 
 function loadTodo() {
   const data = JSON.parse(localStorage.getItem(localStorageName));
-  console.log(data);
   for (const todo of data) {
     addTodo(todo.title, todo.completed);
   }
