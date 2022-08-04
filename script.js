@@ -36,9 +36,7 @@ function addTodo(title, completed) {
   deleteBtn.className = "btn btn-danger";
 
   //your code here
-  div.appendChild(span);
-  div.appendChild(doneBtn);
-  div.appendChild(deleteBtn);
+  div.append(span, doneBtn, deleteBtn);
 
   doneBtn.style.display = "none";
   deleteBtn.style.display = "none";
@@ -70,7 +68,7 @@ function saveTodo() {
       completed: todoDiv.children[0].style.textDecoration === "line-through",
     });
   }
-  localStorage.setItem(localStorageName, JSON.stringify(data));
+  localStorage.setItem(localStorageName, JSON.stringify(data.reverse()));
 }
 
 function loadTodo() {
